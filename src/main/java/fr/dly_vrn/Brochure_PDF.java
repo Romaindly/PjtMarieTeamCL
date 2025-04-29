@@ -1,0 +1,69 @@
+package fr.dly_vrn;
+
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfWriter;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.net.URL;
+import java.util.Collection;
+
+public class Brochure_PDF {
+
+    /**
+     * Génère un PDF en parcourant la collection de bateaux.
+     * Pour chaque bateau, son texte (via toString()) et son image (si disponible) sont ajoutés.
+     *
+     * @param nomFichier nom du fichier PDF généré
+     * @param bateaux    collection de BateauVoyageur à inclure
+     */
+    public static void genererPDF(String nomFichier, Collection<BateauVoyageur> bateaux) {
+        Document document = new Document(PageSize.A4);
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream(nomFichier));
+            document.open();
+
+            // Titre du document
+            document.add(new Paragraph("Brochure des Bateaux Voyageurs\n\n",
+                    new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD, BaseColor.BLACK)));
+
+            for (BateauVoyageur bv : bateaux) {
+                // Ajouter la description textuelle
+                document.add(new Paragraph(bv.toString()));
+
+                // Ajouter l'image si disponible
+                if (bv.getImageBatVoy() != null && !bv.getImageBatVoy().trim().isEmpty()) {
+                    // Le chemin doit être, par exemple, "/images/kor_ant.jpg"
+                    URL imageUrl = Brochure_PDF.class.getResource(bv.getImageBatVoy());
+                    if (imageUrl != null) {
+                        try {
+                            Image img = Image.getInstance(imageUrl);
+                            img.scaleToFit(400, 200);
+                            img.setAlignment(Image.ALIGN_CENTER);
+                            document.add(img);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        System.err.println("Image introuvable pour " + bv.getNom() + " : " + bv.getImageBatVoy());
+                    }
+                }
+
+                // Ajouter un séparateur
+                document.add(new Paragraph("----------------------------------------------------\n"));
+            }
+
+            document.close();
+            System.out.println("PDF généré : " + nomFichier);
+
+        } catch (FileNotFoundException | DocumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Méthode main pour tester la génération avec tous les bateaux
+    public static void main(String[] args) {
+        Collection<BateauVoyageur> bateaux = Passerelle.chargerLesBateauxVoyageurs();
+        genererPDF("BateauVoyageur.pdf", bateaux);
+    }
+}
