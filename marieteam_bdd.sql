@@ -41,7 +41,7 @@ CREATE TABLE `bateau` (
 --
 
 INSERT INTO `bateau` (`id`, `nom`, `url_image`, `longueur`, `largeur`, `vitesse`) VALUES
-(1, 'Kor Ant', '/images/kor_ant.png', '25.50', '6.20', '18.00'),
+(1, 'Kor Ant', '/images/kor_ant.jpg', '25.50', '6.20', '18.00'),
 (2, 'Ar Solen', '/images/ar_solen.jpg', '30.00', '7.50', '20.50'),
 (3, 'Alixi', '/images/alixi.jpg', '22.80', '5.90', '16.80'),
 (4, 'Luce Isle', '/images/luce_isle.jpg', '28.40', '6.80', '19.20'),
