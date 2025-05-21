@@ -13,7 +13,6 @@ import java.util.Collection;
  * présentant une collection de bateaux voyageurs avec leurs
  * descriptions et images associées.
  */
-
 public class Brochure_PDF {
 
     /**
@@ -23,20 +22,25 @@ public class Brochure_PDF {
      * @param nomFichier nom du fichier PDF généré
      * @param bateaux    collection de BateauVoyageur à inclure
      */
-
     public static void genererPDF(String nomFichier, Collection<BateauVoyageur> bateaux) {
         Document document = new Document(PageSize.A4);
         try {
             PdfWriter.getInstance(document, new FileOutputStream(nomFichier));
             document.open();
 
-            // Titre du document
-            document.add(new Paragraph("Brochure des Bateaux Voyageurs\n\n",
-                    new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD, BaseColor.BLACK)));
+            Paragraph titre = new Paragraph("Brochure des Bateaux Voyageurs\n\n",
+                    new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD, BaseColor.BLACK));
+            titre.setAlignment(Element.ALIGN_CENTER);
+            document.add(titre);
+
 
             for (BateauVoyageur bv : bateaux) {
-                // Ajouter la description textuelle
-                document.add(new Paragraph(bv.toString()));
+                // Description du bateau en paragraphes distincts
+                document.add(new Paragraph("Nom du bateau : " + bv.getNom()+ "\n\n",
+                new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD, BaseColor.BLACK)));
+                document.add(new Paragraph("Longueur : " + String.format("%.2f", bv.getLongueurBat()) + " mètres"));
+                document.add(new Paragraph("Largeur : " + String.format("%.2f", bv.getLargeurBat()) + " mètres"));
+                document.add(new Paragraph("Vitesse : " + String.format("%.2f", bv.getVitesseBatVoy()) + " noeuds \n"));
 
                 // Ajouter l'image si disponible
                 if (bv.getImageBatVoy() != null && !bv.getImageBatVoy().trim().isEmpty()) {
@@ -56,7 +60,8 @@ public class Brochure_PDF {
                 }
 
                 // Ajouter un séparateur
-                document.add(new Paragraph("----------------------------------------------------\n"));
+                document.add(new Paragraph(" \n----------------------------------------------------"));
+                document.add(Chunk.NEWLINE);
             }
 
             document.close();
@@ -73,7 +78,6 @@ public class Brochure_PDF {
      *
      * @param args arguments de la ligne de commande (non utilisés)
      */
-
     public static void main(String[] args) {
         Collection<BateauVoyageur> bateaux = Passerelle.chargerLesBateauxVoyageurs();
         genererPDF("BateauVoyageur.pdf", bateaux);
