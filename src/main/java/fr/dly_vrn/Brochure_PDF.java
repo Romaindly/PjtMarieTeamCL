@@ -8,6 +8,12 @@ import java.io.FileOutputStream;
 import java.net.URL;
 import java.util.Collection;
 
+/**
+ * Classe utilitaire permettant de générer un document PDF
+ * présentant une collection de bateaux voyageurs avec leurs
+ * descriptions et images associées.
+ */
+
 public class Brochure_PDF {
 
     /**
@@ -17,6 +23,7 @@ public class Brochure_PDF {
      * @param nomFichier nom du fichier PDF généré
      * @param bateaux    collection de BateauVoyageur à inclure
      */
+
     public static void genererPDF(String nomFichier, Collection<BateauVoyageur> bateaux) {
         Document document = new Document(PageSize.A4);
         try {
@@ -33,7 +40,6 @@ public class Brochure_PDF {
 
                 // Ajouter l'image si disponible
                 if (bv.getImageBatVoy() != null && !bv.getImageBatVoy().trim().isEmpty()) {
-                    // Le chemin doit être, par exemple, "/images/kor_ant.jpg"
                     URL imageUrl = Brochure_PDF.class.getResource(bv.getImageBatVoy());
                     if (imageUrl != null) {
                         try {
@@ -61,7 +67,13 @@ public class Brochure_PDF {
         }
     }
 
-    // Méthode main pour tester la génération avec tous les bateaux
+    /**
+     * Méthode main pour tester la génération avec tous les bateaux voyageurs.
+     * Le PDF est généré sous le nom "BateauVoyageur.pdf" dans le répertoire courant.
+     *
+     * @param args arguments de la ligne de commande (non utilisés)
+     */
+
     public static void main(String[] args) {
         Collection<BateauVoyageur> bateaux = Passerelle.chargerLesBateauxVoyageurs();
         genererPDF("BateauVoyageur.pdf", bateaux);

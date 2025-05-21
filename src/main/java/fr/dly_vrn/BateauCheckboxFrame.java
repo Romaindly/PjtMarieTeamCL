@@ -34,6 +34,12 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+/**
+ * Fenêtre principale de sélection des bateaux à inclure dans une brochure PDF.
+ * Les bateaux sont présentés avec une image miniature, une liste sélectionnable,
+ * et une prévisualisation avec options d'édition.
+ */
+
 public class BateauCheckboxFrame extends JFrame {
 
     // Panel principal pour la liste des cases à cocher
@@ -58,6 +64,10 @@ public class BateauCheckboxFrame extends JFrame {
     private JButton editButton;
     private JDialog editDialog;
     private BateauVoyageur currentBoat;
+
+    /**
+     * Constructeur par défaut initialisant la fenêtre principale et ses composants.
+     */
 
     public BateauCheckboxFrame() {
         setTitle("Sélectionnez les bateaux pour la brochure");
@@ -160,6 +170,7 @@ public class BateauCheckboxFrame extends JFrame {
     /**
      * Met à jour la JList en affichant les noms des bateaux sélectionnés.
      */
+
     private void updateSelectedDisplay() {
         selectedBoatsListModel.clear();
         for (JCheckBox cb : checkBoxList) {
@@ -177,6 +188,7 @@ public class BateauCheckboxFrame extends JFrame {
      * @param height hauteur désirée en pixels
      * @return l'ImageIcon ou null si l'image n'est pas trouvée
      */
+
     private ImageIcon getBoatIcon(String imagePath, int width, int height) {
         try {
             java.net.URL imgURL = getClass().getResource(imagePath);
@@ -207,6 +219,7 @@ public class BateauCheckboxFrame extends JFrame {
      * @param height la hauteur souhaitée
      * @return la BufferedImage redimensionnée
      */
+
     private static BufferedImage getScaledImage(BufferedImage src, int width, int height) {
         BufferedImage resized = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = resized.createGraphics();
@@ -221,6 +234,7 @@ public class BateauCheckboxFrame extends JFrame {
      *
      * @param bv l'objet BateauVoyageur à prévisualiser
      */
+
     private void showPreview(BateauVoyageur bv) {
         currentBoat = bv;
         ImageIcon icon = getBoatIcon(bv.getImageBatVoy(), 200, 200);
@@ -233,6 +247,7 @@ public class BateauCheckboxFrame extends JFrame {
     /**
      * Récupère les bateaux sélectionnés et génère le PDF via la classe Brochure_PDF.
      */
+
     private void generatePDF() {
         List<BateauVoyageur> selectedBateaux = new ArrayList<>();
         for (JCheckBox cb : checkBoxList) {
@@ -280,7 +295,6 @@ public class BateauCheckboxFrame extends JFrame {
                 currentBoat.setLargeurBat(Double.parseDouble(largeurField.getText()));
                 currentBoat.setVitesseBatVoy(Double.parseDouble(vitesseField.getText()));
                 currentBoat.setImageBatVoy(imageField.getText());
-                
                 // Update preview
                 showPreview(currentBoat);
                 editDialog.dispose();
@@ -301,6 +315,12 @@ public class BateauCheckboxFrame extends JFrame {
         editDialog.setLocationRelativeTo(this);
         editDialog.setVisible(true);
     }
+
+    /**
+     * Méthode principale pour lancer l'interface graphique.
+     *
+     * @param args arguments inutilisés
+     */
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new BateauCheckboxFrame().setVisible(true));

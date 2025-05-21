@@ -3,6 +3,11 @@ package fr.dly_vrn;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Classe utilitaire fournissant des méthodes d'accès aux données,
+ * notamment le chargement des équipements et des bateaux voyageurs
+ * depuis une base de données.
+ */
 public class Passerelle {
 
     /**
@@ -11,6 +16,7 @@ public class Passerelle {
      * @param idBateau l'identifiant du bateau
      * @return une collection d'objets Equipement associés au bateau
      */
+
     public static Collection<Equipement> chargerLesEquipements(String idBateau) {
         Collection<Equipement> equipements = new ArrayList<>();
         // Exemple de requête SQL, adaptez-la à votre schéma
@@ -29,7 +35,7 @@ public class Passerelle {
                 String libEquip = libEquipObj.toString();
                 equipements.add(new Equipement(idEquip, libEquip));
             }
-            jeu.suivant(); // Avancer au prochain enregistrement
+            jeu.suivant();// Avancer au prochain enregistrement
         }
         jeu.fermer();
         return equipements;
@@ -40,11 +46,13 @@ public class Passerelle {
      *
      * @return une collection d'objets BateauVoyageur
      */
+
     public static Collection<BateauVoyageur> chargerLesBateauxVoyageurs() {
         Collection<BateauVoyageur> bateaux = new ArrayList<>();
         // Exemple de requête SQL, adaptez-la à votre table "bateau"
         String sql = "SELECT id, nom, longueur, largeur, vitesse, url_image FROM bateau";
         JeuEnregistrement jeu = new JeuEnregistrement(sql);
+
         while (!jeu.fin()) {
             Object idObj = jeu.getValeur("id");
             Object nomObj = jeu.getValeur("nom");
@@ -70,9 +78,10 @@ public class Passerelle {
                 BateauVoyageur bv = new BateauVoyageur(idBat, nomBat, longueur, largeur, vitesse, image, equipements);
                 bateaux.add(bv);
             }
-            jeu.suivant(); // Passer à l'enregistrement suivant
+            jeu.suivant();// Passer à l'enregistrement suivant
         }
         jeu.fermer();
         return bateaux;
     }
 }
+

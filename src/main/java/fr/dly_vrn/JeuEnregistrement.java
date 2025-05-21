@@ -14,7 +14,10 @@ public class JeuEnregistrement {
     /**
      * Constructeur : exécute la requête SQL et positionne le curseur sur le premier enregistrement.
      * Si aucun enregistrement n'est trouvé, la variable fin est mise à true.
+     *
+     * @param sql requête SQL à exécuter
      */
+
     public JeuEnregistrement(String sql) {
         try {
             // Charger les propriétés de connexion depuis db.properties
@@ -38,7 +41,11 @@ public class JeuEnregistrement {
 
     /**
      * Charge le fichier db.properties depuis le classpath.
+     *
+     * @return un objet Properties contenant les infos de connexion
+     * @throws IOException si le fichier est introuvable ou illisible
      */
+
     private Properties loadDBProperties() throws IOException {
         Properties props = new Properties();
         InputStream input = getClass().getClassLoader().getResourceAsStream("db.properties");
@@ -52,7 +59,10 @@ public class JeuEnregistrement {
     /**
      * Méthode fin().
      * Retourne true si le curseur a atteint la fin des enregistrements.
+     *
+     * @return true si plus de données, false sinon
      */
+
     public boolean fin() {
         return fin;
     }
@@ -60,6 +70,7 @@ public class JeuEnregistrement {
     /**
      * Avance le curseur vers l'enregistrement suivant.
      */
+
     public void suivant() {
         try {
             if (resultSet.next()) {
@@ -75,7 +86,11 @@ public class JeuEnregistrement {
 
     /**
      * Renvoie la valeur du champ 'nomChamp' de l'enregistrement courant.
+     *
+     * @param nomChamp nom du champ
+     * @return valeur du champ ou null si erreur
      */
+
     public Object getValeur(String nomChamp) {
         try {
             if (!fin) {
@@ -90,6 +105,7 @@ public class JeuEnregistrement {
     /**
      * Ferme le ResultSet, le Statement et la Connection.
      */
+
     public void fermer() {
         try {
             if (resultSet != null) resultSet.close();
